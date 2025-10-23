@@ -1,0 +1,63 @@
+# --- IDEs ---
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# --- OS Junk ---
+.DS_Store
+Thumbs.db
+
+# --- Logs ---
+*.log
+logs/
+*.out
+
+# --- Temporary files ---
+*.tmp
+*.swp
+*~
+
+# --- Build tools ---
+# Gradle and Maven build directories (global ignore)
+build/
+target/
+out/
+
+# --- Python bytecode ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# --- Virtual environments ---
+venv/
+.env/
+.env.*
+.venv/
+
+# --- Java ---
+# Ignore compiled files
+*.class
+
+# --- Node (if you have frontend parts later) ---
+node_modules/
+dist/
+
+# --- Backup files ---
+*.bak
+*.old
+
+# --- JetBrains local settings ---
+.idea/*
+!.idea/codeStyles/
+!.idea/runConfigurations/
+
+# --- System-specific ---
+*.DS_Store
+ehthumbs.db
+Icon?
+Desktop.ini
