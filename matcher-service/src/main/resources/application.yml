@@ -1,10 +1,14 @@
 spring:
   application:
     name: matcher-service
-
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/matcher_db
+  mvc:
+    throw-exception-if-no-handler-found: true
 
 ai:
   service:
     base-url: http://localhost:8000
+    connect-timeout-ms: 2000
+    read-timeout-ms: 5000
