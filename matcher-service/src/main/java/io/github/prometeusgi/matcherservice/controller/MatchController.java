@@ -1,10 +1,9 @@
 package io.github.prometeusgi.matcherservice.controller;
 
-import io.github.prometeusgi.matcherservice.client.dto.AiRequest;
-import io.github.prometeusgi.matcherservice.client.dto.AiResponse;
 import io.github.prometeusgi.matcherservice.domain.MatchResult;
-import io.github.prometeusgi.matcherservice.repo.MatchResultRepository;
 import io.github.prometeusgi.matcherservice.service.MatchingService;
+import io.github.prometeusgi.matcherservice.web.dto.MatchRequest;
+import io.github.prometeusgi.matcherservice.web.dto.MatchResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,20 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/match")
+@RequestMapping("/api/matches")
 @RequiredArgsConstructor
 public class MatchController {
 
     private final MatchingService matchingService;
-    private final MatchResultRepository matchResultRepository;
 
     @PostMapping
-    public AiResponse match(@Valid @RequestBody AiRequest request) {
+    public MatchResponse match(@Valid @RequestBody MatchRequest request) {
         return matchingService.matchAndPersist(request);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<MatchResult> findAll() {
-        return matchResultRepository.findAll();
+        return matchingService.findAll();
     }
 }

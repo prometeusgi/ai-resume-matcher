@@ -19,16 +19,14 @@ public class DefaultAiClient implements AiClient {
 
     @Override
     public AiResponse analyze(String resume, String jobDescription) {
-        AiRequest request = new AiRequest(resume, jobDescription);
         try {
             return restClient.post()
                     .uri("/match")
-                    .body(request)
+                    .body(new AiRequest(resume, jobDescription))
                     .retrieve()
                     .body(AiResponse.class);
         } catch (RestClientResponseException ex) {
-            String msg = "AI service error: " + ex.getStatusCode().value() + ": " + ex.getResponseBodyAsString();
-            throw new AiServiceException(msg, ex);
+            throw new AiServiceException("AI service error: " + ex.getStatusCode().value() + ": " + ex.getResponseBodyAsString(), ex);
         } catch (RestClientException ex) {
             throw new AiServiceException("AI service call failed", ex);
         }

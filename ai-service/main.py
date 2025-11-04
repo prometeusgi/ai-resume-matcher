@@ -3,6 +3,10 @@ from pydantic import BaseModel
 
 app = FastAPI(title="AI Resume Matcher Service")
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 class MatchRequest(BaseModel):
     resume: str
     job_description: str

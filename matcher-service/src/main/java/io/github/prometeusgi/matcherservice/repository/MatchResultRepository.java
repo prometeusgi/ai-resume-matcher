@@ -1,4 +1,4 @@
-package io.github.prometeusgi.matcherservice.repo;
+package io.github.prometeusgi.matcherservice.repository;
 
 import io.github.prometeusgi.matcherservice.domain.MatchResult;
 import org.springframework.data.mongodb.repository.MongoRepository;

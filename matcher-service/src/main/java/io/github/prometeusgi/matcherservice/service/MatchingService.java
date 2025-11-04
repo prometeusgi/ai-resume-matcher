@@ -4,7 +4,9 @@ import io.github.prometeusgi.matcherservice.client.AiClient;
 import io.github.prometeusgi.matcherservice.client.dto.AiRequest;
 import io.github.prometeusgi.matcherservice.client.dto.AiResponse;
 import io.github.prometeusgi.matcherservice.domain.MatchResult;
-import io.github.prometeusgi.matcherservice.repo.MatchResultRepository;
+import io.github.prometeusgi.matcherservice.repository.MatchResultRepository;
+import io.github.prometeusgi.matcherservice.web.dto.MatchRequest;
+import io.github.prometeusgi.matcherservice.web.dto.MatchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,18 @@ public class MatchingService {
     private final AiClient aiClient;
     private final MatchResultRepository matchResultRepository;
 
-    public AiResponse matchAndPersist(AiRequest request) {
-        AiResponse response = aiClient.analyze(request.getResume(), request.getJobDescription());
+    public MatchResponse matchAndPersist(MatchRequest request) {
+        AiRequest aiRequest = new AiRequest(request.getResume(), request.getJobDescription());
+        AiResponse response = aiClient.analyze(aiRequest.getResume(), aiRequest.getJobDescription());
+        saveResult(request, response);
+        return toMatchResponse(response);
+    }
 
+    public List<MatchResult> findAll() {
+        return matchResultRepository.findAll();
+    }
+
+    private void saveResult(MatchRequest request, AiResponse response) {
         MatchResult result = new MatchResult();
         result.setResumeText(request.getResume());
         result.setJobDescription(request.getJobDescription());
@@ -37,6 +48,14 @@ public class MatchingService {
         result.setSkillsMissing(missing);
 
         matchResultRepository.save(result);
-        return response;
+    }
+
+    private static MatchResponse toMatchResponse(AiResponse response) {
+        MatchResponse out = new MatchResponse();
+        out.setMatchScore(response.getMatchScore());
+        out.setSummary(response.getSummary());
+        out.setSkillsMatched(response.getSkillsMatched());
+        out.setSkillsMissing(response.getSkillsMissing());
+        return out;
     }
 }
